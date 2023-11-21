@@ -17,3 +17,11 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# ログファイル
+!/logs/db/
+/logs/db/*
+!/logs/db/.gitkeep
+!/logs/web/
+/logs/web/*
+!/logs/web/.gitkeep
