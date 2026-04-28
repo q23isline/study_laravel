@@ -28,5 +28,7 @@ services:
     environment:
       POSTGRES_DB: study_laravel
       POSTGRES_PASSWORD: Passw0rd
+    command: -c 'config_file=/etc/postgresql/postgresql.conf'
     volumes:
       - db-data:/var/lib/postgresql
+      - ./logs/postgres:/var/log/postgresql/18

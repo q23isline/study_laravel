@@ -35,3 +35,6 @@ auth.json
 !/logs/npm/
 /logs/npm/*
 !/logs/npm/.gitkeep
+!/logs/postgres/
+/logs/postgres/*
+!/logs/postgres/.gitkeep
