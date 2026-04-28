@@ -32,4 +32,4 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | b
 
 WORKDIR /src
 
-EXPOSE 8000
+EXPOSE 5173 8000

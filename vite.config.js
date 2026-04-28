@@ -14,5 +14,12 @@ export default defineConfig({
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },
+        // ローカル環境で Vite 側にアクセスできるように指定する
+        host: '0.0.0.0',
+        port: 5173,
+        strictPort: true,
+        hmr: {
+            host: 'localhost',
+        },
     },
 });
