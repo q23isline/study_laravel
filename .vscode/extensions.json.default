@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "streetsidesoftware.code-spell-checker",
+        "EditorConfig.EditorConfig",
+        "neilbrayfield.php-docblocker",
+        "DEVSENSE.phptools-vscode",
+        "SanderRonde.phpstan-vscode"
+    ]
+}

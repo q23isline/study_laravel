@@ -34,3 +34,9 @@ Thumbs.db
 !/logs/postgres/
 /logs/postgres/*
 !/logs/postgres/.gitkeep
+
+# VSCode 設定
+!/.vscode/
+/.vscode/*
+!/.vscode/extensions.json.default
+!/.vscode/settings.json.default
