@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/local/app/Dockerfile
+    container_name: app
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/src
+      # https://www.php.net/downloads.php?os=windows
+      - ./docker/local/app/php.ini:/etc/php.d/php.ini
+      - ./logs/npm:/root/.npm/_logs
+    stdin_open: true
+    tty: true

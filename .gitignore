@@ -28,3 +28,10 @@ Homestead.json
 .env.production
 .phpactor.json
 auth.json
+
+# ログファイル
+!/logs/
+/logs/*
+!/logs/npm/
+/logs/npm/*
+!/logs/npm/.gitkeep
