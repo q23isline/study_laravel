@@ -12,6 +12,8 @@
 
 Laravel 勉強用リポジトリ
 
+- [開発者ガイド](./docs/developer-guide.md)
+
 ## 前提
 
 - インストール
@@ -37,6 +39,8 @@ Laravel 勉強用リポジトリ
 
     ```bash
     cp .env.example .env
+    cp .vscode/extensions.json.default .vscode/extensions.json
+    cp .vscode/settings.json.default .vscode/settings.json
     ```
 
 4. アプリ立ち上げ
