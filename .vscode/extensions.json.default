@@ -1,5 +1,6 @@
 {
     "recommendations": [
+        "laravel.vscode-laravel",
         "streetsidesoftware.code-spell-checker",
         "EditorConfig.EditorConfig",
         "neilbrayfield.php-docblocker",

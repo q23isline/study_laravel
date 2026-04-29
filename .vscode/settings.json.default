@@ -1,4 +1,7 @@
 {
+    "[php]": {
+        "editor.defaultFormatter": "laravel.vscode-laravel"
+    },
     "editor.formatOnSave": true,
     "phpstan.singleFileMode": true,
     "phpstan.binPath": "vendor/bin/phpstan",
