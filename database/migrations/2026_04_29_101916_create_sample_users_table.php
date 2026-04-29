@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('sample_users', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 100)->index();
+            $table->date('birth_day');
+            $table->decimal('height', 4, 1);
+            $table->enum('gender', ['1', '2']);
             $table->timestamps();
         });
     }
