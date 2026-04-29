@@ -16,10 +16,12 @@ Laravel 勉強用リポジトリ
 
 ## 前提
 
-- インストール
+- インストール（ホスト上に）
   - [Windows Subsystem for Linux](https://learn.microsoft.com/ja-jp/windows/wsl/)
   - [Git](https://git-scm.com/)
   - [Visual Studio Code](https://code.visualstudio.com/)
+- インストール（Windows Subsystem for Linux 上に）
+  - [PHP](https://www.php.net/downloads.php?os=linux&osvariant=linux-ubuntu&version=default)
 
 ## はじめにやること
 

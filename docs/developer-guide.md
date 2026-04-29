@@ -3,6 +3,10 @@
 ## アプリ標準チェック単体実行
 
 ```bash
+# フォーマッターチェック実行
+docker compose exec app ./vendor/bin/pint --test
+# フォーマッター自動整形実行
+docker compose exec app ./vendor/bin/pint
 # コード静的解析実行
 docker compose exec app ./vendor/bin/phpstan analyse --memory-limit=2G
 ```
