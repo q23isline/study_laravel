@@ -28,10 +28,33 @@ class SampleUserUpdateRequest extends FormRequest
     {
         return [
             'data.type' => ['required', 'in:users'],
+            /**
+             * ID
+             *
+             * @example 1
+             */
             'data.id' => ['required', 'integer'],
+            /**
+             * 氏名
+             *
+             * @example 田中太郎
+             */
             'data.attributes.name' => ['required', 'string', 'max:100'],
+            /**
+             * 生年月日
+             *
+             * @example 2000/01/01
+             */
             'data.attributes.birth_day' => ['required', 'date_format:Y/m/d'],
+            /**
+             * 身長（cm）
+             *
+             * @example 170.5
+             */
             'data.attributes.height' => ['required', 'numeric'],
+            /**
+             * 性別（1: 男性, 2: 女性）
+             */
             'data.attributes.gender' => ['required', 'in:1,2'],
         ];
     }

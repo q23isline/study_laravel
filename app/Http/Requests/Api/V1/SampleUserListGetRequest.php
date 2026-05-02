@@ -26,9 +26,27 @@ class SampleUserListGetRequest extends FormRequest
     public function rules(): array
     {
         return [
+            /**
+             * 氏名の検索キーワード
+             *
+             * @example 田中
+             */
             'filter.name' => ['nullable', 'string'],
+            /**
+             * 並び順（先頭マイナス - は降順、他昇順）
+             */
             'sort' => ['nullable', 'in:name,-name,birth_day,-birth_day,height,-height,gender,-gender'],
+            /**
+             * 表示するページ
+             *
+             * @default 1
+             */
             'page.number' => ['nullable', 'integer', 'min:1'],
+            /**
+             * ページ内で表示する件数
+             *
+             * @default 10
+             */
             'page.size' => ['nullable', 'integer', 'min:1'],
         ];
     }

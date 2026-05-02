@@ -44,18 +44,51 @@ class SampleUserListGetCollection extends ResourceCollection
 
         return [
             'meta' => [
+                /**
+                 * 全件数
+                 *
+                 * @example 1
+                 */
                 'total' => $this->total,
                 'page' => [
+                    /**
+                     * 表示しているページ数
+                     *
+                     * @example 1
+                     */
                     'number' => $this->command->pageNumber->value,
+                    /**
+                     * 表示する件数
+                     *
+                     * @example 10
+                     */
                     'size' => $this->command->pageSize->value,
+                    /**
+                     * 全ページ数
+                     *
+                     * @example 1
+                     */
                     'total_pages' => $totalPage,
                 ],
             ],
             'links' => [
+                /**
+                 * @example /api/v1/sample-users?page%5Bnumber%5D=1
+                 */
                 'self' => $this->buildLink($request, 0),
+                /**
+                 * 次のページのリンク
+                 *
+                 * @example null
+                 */
                 'next' => $this->command->pageNumber->value < $totalPage
                     ? $this->buildLink($request, +1)
                     : null,
+                /**
+                 * 前のページのリンク
+                 *
+                 * @example null
+                 */
                 'prev' => $this->command->pageNumber->value > 1
                     ? $this->buildLink($request, -1)
                     : null,
