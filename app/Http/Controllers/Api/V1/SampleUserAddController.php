@@ -2,16 +2,28 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\ApplicationService\SampleUsers\AddApplicationService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\SampleUserAddRequest;
+use App\Http\Resources\Api\V1\SampleUserAddResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SampleUserAddController extends Controller
 {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(SampleUserAddRequest $request): JsonResponse
     {
-        //
+        $dto = $request->toDto();
+
+        $service = new AddApplicationService;
+        $data = $service->handle($dto);
+
+        return (new SampleUserAddResource($data))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 }
