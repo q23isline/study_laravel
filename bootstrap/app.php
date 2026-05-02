@@ -20,6 +20,16 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // https://laravel.com/docs/13.x/errors#rendering-exceptions-as-json
+        $exceptions->shouldRenderJsonWhen(function (Request $request, Throwable $e) {
+            if ($request->is('api/*')) {
+                // エラー発生時 /api から始まる URL のレスポンスは JSON 固定にする。固定しないと HTML を返してしまう。
+                return true;
+            }
+
+            return $request->expectsJson();
+        });
+
         // https://laravel.com/docs/13.x/errors#rendering-exceptions
         $exceptions->render(function (ValidationException $e, Request $request) {
             if ($request->is('api/*')) {
