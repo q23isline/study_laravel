@@ -42,6 +42,7 @@ Laravel 勉強用リポジトリ
     ```bash
     cp .env.example .env
     cp .vscode/extensions.json.default .vscode/extensions.json
+    cp .vscode/launch.json.default .vscode/launch.json
     cp .vscode/settings.json.default .vscode/settings.json
     ```
 
