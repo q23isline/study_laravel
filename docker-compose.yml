@@ -10,6 +10,10 @@ services:
     ports:
       - 5173:5173
       - 8000:8000
+    # この指定がないと WLS2 の Ubuntu に直接 Docker インストールで動かしている場合に PHP がデバッグできない
+    # Docker Desktop をインストールしていればなくても動くがあっても問題ない
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./:/src
       # https://www.php.net/downloads.php?os=windows

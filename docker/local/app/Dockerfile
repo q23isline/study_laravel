@@ -19,6 +19,14 @@ RUN dnf install -y php-pgsql
 # Node.js をインストールするのに必要
 RUN dnf install -y tar findutils
 
+# デバッグ実行できるようにする
+# pecl に必要なライブラリ
+RUN dnf install -y php-pear php8.5-devel
+
+# https://xdebug.org/docs/install#pecl
+RUN pecl install xdebug
+RUN echo "zend_extension=xdebug.so" >> /etc/php.ini
+
 RUN dnf clean all
 
 ENV NODE_VERSION=24.15.0
