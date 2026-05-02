@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\SampleUsers;
 
+use App\ApplicationService\SampleUsers\AddCommand;
+use App\ApplicationService\SampleUsers\ListGetCommand;
+use App\ApplicationService\SampleUsers\UpdateCommand;
+use App\Domain\Models\SampleUser\SampleUser as SampleUserDomain;
+use App\Domain\Models\SampleUser\SampleUserCollection;
+use App\Domain\Models\SampleUser\Type\Gender;
+use App\Domain\Models\SampleUser\Type\Height;
 use App\Models\SampleUser;
 use DateTime;
 
@@ -11,13 +18,11 @@ final class SampleUserRepository
 {
     /**
      * DB からユーザー件数取得
-     *
-     * @param  array{filterName: null|string, sort: null|string, pageNumber: int, pageSize: int}  $command
      */
-    public function countUsers(array $command): int
+    public function countUsers(ListGetCommand $command): int
     {
         $count = SampleUser::query()
-            ->when($command['filterName'], fn ($q, $v) => $q->whereLike('name', "%{$v}%"))
+            ->when($command->filterName, fn ($q, $v) => $q->whereLike('name', "%{$v}%"))
             ->count();
 
         return $count;
@@ -25,31 +30,28 @@ final class SampleUserRepository
 
     /**
      * DB からユーザー取得
-     *
-     * @param  array{filterName: null|string, sort: null|string, pageNumber: int, pageSize: int}  $command
-     * @return array<array{id: int, name: string, birthDay: DateTime, height: string, gender: '1'|'2'}>
      */
-    public function findUsers(array $command): array
+    public function findUsers(ListGetCommand $command): SampleUserCollection
     {
         $query = SampleUser::query()
-            ->when($command['filterName'], fn ($q, $v) => $q->whereLike('name', "%{$v}%"));
+            ->when($command->filterName, fn ($q, $v) => $q->whereLike('name', "%{$v}%"));
 
-        if ($command['sort'] !== null) {
-            $sortColumn = $this->removeLeadingHyphen($command['sort']);
-            $order = $this->startsWithHyphen($command['sort']) ? 'desc' : 'asc';
+        if ($command->sort !== null) {
+            $sortColumn = $this->removeLeadingHyphen($command->sort);
+            $order = $this->startsWithHyphen($command->sort) ? 'desc' : 'asc';
             $query->orderBy($sortColumn, $order);
         }
 
         // 並び順が一定になるように ID をつけとく
         $records = $query->orderBy('id', 'asc')
-            ->paginate(perPage: $command['pageSize'], page: $command['pageNumber']);
+            ->paginate(perPage: $command->pageSize->value, page: $command->pageNumber->value);
 
-        $result = [];
+        $collection = new SampleUserCollection;
         foreach ($records as $record) {
-            $result[] = $this->buildEntity($record);
+            $collection->add($this->buildEntity($record));
         }
 
-        return $result;
+        return $collection;
     }
 
     /**
@@ -62,10 +64,8 @@ final class SampleUserRepository
 
     /**
      * DB へユーザー取得
-     *
-     * @return array{id: int, name: string, birthDay: DateTime, height: string, gender: '1'|'2'}
      */
-    public function findUser(int $id): array
+    public function findUser(int $id): SampleUserDomain
     {
         $record = SampleUser::findOrFail($id);
 
@@ -74,17 +74,14 @@ final class SampleUserRepository
 
     /**
      * DB へユーザー保存
-     *
-     * @param  array{type: string, name: string, birthDay: DateTime, height: string, gender: '1'|'2'}  $command
-     * @return array{id: int, name: string, birthDay: DateTime, height: string, gender: '1'|'2'}
      */
-    public function saveUser(array $command): array
+    public function saveUser(AddCommand $command): SampleUserDomain
     {
         $entity = new SampleUser;
-        $entity->name = $command['name'];
-        $entity->birth_day = $command['birthDay']->format('Y-m-d');
-        $entity->height = (float) $command['height'];
-        $entity->gender = $command['gender'];
+        $entity->name = $command->name;
+        $entity->birth_day = $command->birthDay->format('Y-m-d');
+        $entity->height = (float) $command->height;
+        $entity->gender = Gender::from($command->gender)->value;
         $entity->saveOrFail();
 
         return $this->buildEntity($entity);
@@ -92,17 +89,14 @@ final class SampleUserRepository
 
     /**
      * DB へユーザー更新
-     *
-     * @param  array{type: string, id: int, name: string, birthDay: DateTime, height: string, gender: '1'|'2'}  $command
-     * @return array{id: int, name: string, birthDay: DateTime, height: string, gender: '1'|'2'}
      */
-    public function updateUser(array $command): array
+    public function updateUser(UpdateCommand $command): SampleUserDomain
     {
-        $entity = SampleUser::findOrFail($command['id']);
-        $entity->name = $command['name'];
-        $entity->birth_day = $command['birthDay']->format('Y-m-d');
-        $entity->height = (float) $command['height'];
-        $entity->gender = $command['gender'];
+        $entity = SampleUser::findOrFail($command->id);
+        $entity->name = $command->name;
+        $entity->birth_day = $command->birthDay->format('Y-m-d');
+        $entity->height = (float) $command->height;
+        $entity->gender = Gender::from($command->gender)->value;
         $entity->saveOrFail();
 
         return $this->buildEntity($entity);
@@ -119,20 +113,16 @@ final class SampleUserRepository
 
     /**
      * エンティティを組み立てる
-     *
-     * @return array{id: int, name: string, birthDay: DateTime, height: string, gender: '1'|'2'}
      */
-    private function buildEntity(SampleUser $entity): array
+    private function buildEntity(SampleUser $entity): SampleUserDomain
     {
-        $result = [
-            'id' => $entity->id,
-            'name' => $entity->name,
-            'birthDay' => new DateTime($entity->birth_day),
-            'height' => (string) $entity->height,
-            'gender' => $entity->gender,
-        ];
-
-        return $result;
+        return new SampleUserDomain(
+            $entity->id,
+            $entity->name,
+            new DateTime($entity->birth_day),
+            new Height((float) $entity->height),
+            Gender::from($entity->gender)
+        );
     }
 
     /**

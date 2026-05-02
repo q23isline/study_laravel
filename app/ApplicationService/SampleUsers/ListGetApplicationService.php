@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ApplicationService\SampleUsers;
 
+use App\Domain\Models\SampleUser\SampleUserCollection;
 use App\Infrastructure\SampleUsers\SampleUserRepository;
 
 class ListGetApplicationService
@@ -21,10 +22,9 @@ class ListGetApplicationService
     /**
      * ユースケースを表現する
      *
-     * @param  array{filterName: null|string, sort: null|string, pageNumber: int, pageSize: int}  $command
-     * @return array{count: int, users: array<string|int, array{id: int, name: string, birthDay: \DateTime, height: string, gender: '1'|'2'}>}
+     * @return array{count: int, users: SampleUserCollection}
      */
-    public function handle(array $command): array
+    public function handle(ListGetCommand $command): array
     {
         $count = $this->sampleUserRepository->countUsers($command);
         $users = $this->sampleUserRepository->findUsers($command);

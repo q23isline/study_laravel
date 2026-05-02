@@ -23,16 +23,14 @@ class DeleteApplicationService
     /**
      * ユースケースを表現する
      *
-     * @param  array{id: int}  $command
-     *
      * @throws NotFoundException
      */
-    public function handle(array $command): void
+    public function handle(DeleteCommand $command): void
     {
-        if (! $this->sampleUserRepository->isExistUser($command['id'])) {
+        if (! $this->sampleUserRepository->isExistUser($command->id)) {
             throw new NotFoundException([new ExceptionItem('', '', 'サンプルユーザーが存在しません。')]);
         }
 
-        $this->sampleUserRepository->deleteUser($command['id']);
+        $this->sampleUserRepository->deleteUser($command->id);
     }
 }
